@@ -254,18 +254,16 @@ public class TestPermissionCheck {
    */
   @Test
   public void testGetKey() throws IOException {
-    Mockito.when(objectStore.getS3Volume()).thenReturn(volume);
     Mockito.when(client.getProxy()).thenReturn(clientProtocol);
     doThrow(exception).when(clientProtocol)
-        .getKeyDetails(anyString(), anyString(), anyString());
+        .getS3KeyDetails(anyString(), anyString());
     ObjectEndpoint objectEndpoint = new ObjectEndpoint();
     objectEndpoint.setClient(client);
     objectEndpoint.setHeaders(headers);
     objectEndpoint.setOzoneConfiguration(conf);
 
     try {
-      objectEndpoint.get("bucketName", "keyPath", null, 1000, "marker",
-          null);
+      objectEndpoint.get("bucketName", "keyPath", null, 1000, "marker");
       Assert.fail("Should fail");
     } catch (Exception e) {
       e.printStackTrace();
